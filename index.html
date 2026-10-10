@@ -3,294 +3,763 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Electro Energy Solutions d.o.o. | Elektroinstalacije Zagreb</title>
+<title>Electro Energy Solutions</title>
 <meta name="description" content="Izvođenje elektroinstalacijskih radova na stambenim, poslovnim i industrijskim objektima u Zagrebu i Zagrebačkoj županiji.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
 <style>
-:root{--paper:#F2F4F6;--card:#FFFFFF;--ink:#102239;--mute:#5A6A7E;--line:#D5DCE4;--volt:#FFC83D;--blue:#2F6DB5;--night:#0D1B2E;
---d:'Bricolage Grotesque',system-ui,sans-serif;--b:'Figtree',system-ui,sans-serif;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0F1A29;--card:#16263A;--ink:#EAF0F7;--mute:#9BADC2;--line:#26384F}}
-:root[data-theme="dark"]{--paper:#0F1A29;--card:#16263A;--ink:#EAF0F7;--mute:#9BADC2;--line:#26384F}
-html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+/* Layout: brand-black canvas, gold only where current flows. Hero = headline + live distribution board; then bento services, filterable work, process, FAQ, quote form. */
+:root{
+  color-scheme:dark;
+  --bg:#080807; --surface:#0E0E0C; --raised:#14140F; --border:#24221D; --border-hi:#38352C;
+  --fg:#F4F1EA; --muted:#938C7E; --dim:#6A6458;
+  --gold:#D1A447; --gold-hi:#F2CB6A; --gold-ink:#1A1405; --gold-soft:rgba(209,164,71,.12);
+  --ok:#5BC48A; --danger:#E8705F;
+  --font:'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:10px; --ease:cubic-bezier(.2,.8,.2,1);
+}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--b);-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-family:var(--d);line-height:1.05;margin:0;letter-spacing:-.02em}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--volt);outline-offset:3px}
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
-section{padding:112px 0}
-.lead{color:var(--mute);max-width:56ch}
-h2{font-size:clamp(34px,5vw,60px);font-weight:800;max-width:16ch}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.6 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.025em;line-height:1.1;text-wrap:balance}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px}
+@media(max-width:520px){.wrap{padding-inline:16px}}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* rail: current flows as you scroll */
-.rail{position:fixed;left:0;top:0;bottom:0;width:4px;background:rgba(127,140,160,.18);z-index:60}
-.rail i{display:block;width:100%;height:0;background:var(--volt);box-shadow:0 0 14px 2px var(--volt)}
+/* ---------- loader ---------- */
+#loader{position:fixed;inset:0;z-index:200;background:var(--bg);display:grid;place-items:center;clip-path:inset(0 0 0 0);animation:ldOut .5s cubic-bezier(.75,0,.2,1) 1.05s forwards}
+#loader .lm{width:92px;height:92px;color:var(--gold)}
+#loader .ring{fill:none;stroke:var(--gold);stroke-width:10;stroke-dasharray:1;stroke-dashoffset:1;animation:draw .55s var(--ease) .05s forwards;transform:rotate(-90deg);transform-origin:center}
+#loader .e{opacity:0;animation:flicker .45s steps(1) .45s forwards}
+#loader .lbar{position:absolute;left:50%;top:calc(50% + 70px);width:120px;height:2px;margin-left:-60px;background:var(--border);border-radius:2px;overflow:hidden}
+#loader .lbar i{display:block;height:100%;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left;animation:fill 1s var(--ease) forwards;box-shadow:0 0 10px var(--gold)}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes flicker{0%{opacity:.9}15%{opacity:.1}30%{opacity:1}45%{opacity:.3}60%,100%{opacity:1;filter:drop-shadow(0 0 14px rgba(242,203,106,.7))}}
+@keyframes fill{to{transform:scaleX(1)}}
+@keyframes ldOut{to{clip-path:inset(0 0 100% 0);visibility:hidden}}
+.seen #loader{display:none}
 
-/* nav */
-nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:50;height:72px;display:flex;align-items:center;transition:background .3s}
-nav.solid{background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;justify-content:space-between;align-items:center;width:100%}
-.logo{font:800 19px var(--d);text-decoration:none;display:flex;align-items:center;gap:10px;color:#fff}
-nav.solid .logo{color:var(--ink)}
-.logo b{width:30px;height:30px;border-radius:8px;background:var(--volt);color:var(--night);display:grid;place-items:center;font-size:17px}
-.links{display:flex;gap:28px;align-items:center}
-.links a{text-decoration:none;font-weight:500;font-size:15px;color:#cfd9e6}
-nav.solid .links a{color:var(--mute)}
-.links a:hover{color:var(--volt)}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--volt);color:var(--night)!important;font:600 16px var(--b);padding:14px 24px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px -6px rgba(255,200,61,.6)}
-@media(max-width:760px){.links a:not(.btn){display:none}}
+/* ---------- nav ---------- */
+.prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:left;background:var(--gold);z-index:61;box-shadow:0 0 8px var(--gold)}
+nav{position:fixed;top:0;left:0;right:0;z-index:60;padding-top:env(safe-area-inset-top,0px);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+nav.solid{background:rgba(8,8,7,.78);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-color:var(--border)}
+.nav-in{height:64px;display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;letter-spacing:-.01em;white-space:nowrap}
+.brand svg{width:30px;height:30px;color:var(--gold);transition:filter .5s}
+.lit .brand svg{filter:drop-shadow(0 0 8px rgba(242,203,106,.6))}
+.nav-links{display:flex;gap:2px;margin-left:12px}
+.nav-links a{padding:7px 12px;border-radius:8px;font-size:14px;color:var(--muted);transition:color .15s,background .15s}
+.nav-links a:hover{color:var(--fg);background:var(--raised)}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.kbtn{display:flex;align-items:center;gap:10px;height:36px;padding:0 8px 0 12px;border:1px solid var(--border);background:var(--surface);border-radius:8px;color:var(--muted);font-size:13px;cursor:pointer;min-width:200px;transition:border-color .15s}
+.kbtn:hover{border-color:var(--border-hi)}
+.kbtn svg{width:15px;height:15px}
+kbd{font:500 11px var(--mono);padding:2px 6px;border:1px solid var(--border-hi);border-radius:5px;background:var(--raised);color:var(--muted);margin-left:auto}
+@media(max-width:980px){.nav-links{display:none}}
+@media(max-width:640px){.kbtn{min-width:0;padding:0 10px}.kbtn span,.kbtn kbd{display:none}.brand span{display:none}}
 
-/* hero */
-.hero{--x:30%;--y:40%;position:relative;min-height:100svh;background:var(--night);color:#fff;display:flex;align-items:center;overflow:hidden;padding:120px 0 80px}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle 380px at var(--x) var(--y),rgba(255,200,61,.22),transparent 70%);transition:opacity .6s}
-.hero.on::before{background:radial-gradient(circle at 70% 30%,rgba(255,200,61,.3),transparent 60%),radial-gradient(circle at 10% 90%,rgba(47,109,181,.35),transparent 55%)}
-.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:48px 48px;-webkit-mask:radial-gradient(circle 420px at var(--x) var(--y),#000,transparent);mask:radial-gradient(circle 420px at var(--x) var(--y),#000,transparent)}
-.hero.on .grid{-webkit-mask:none;mask:none;opacity:.6}
-.hero .wrap{position:relative;display:grid;grid-template-columns:1.5fr .8fr;gap:48px;align-items:center}
-.hero h1{font-size:clamp(46px,8.4vw,112px);font-weight:800;letter-spacing:-.035em;
-background:radial-gradient(circle 260px at var(--x) var(--y),#FFD968,#56688a 75%);-webkit-background-clip:text;background-clip:text;color:transparent;transition:all .5s}
-.hero.on h1{background:none;color:#fff}
-.hero.on h1 em{color:var(--volt)}
-.hero h1 em{font-style:normal}
-.hero p{color:#b6c4d6;max-width:46ch;margin:28px 0 36px;font-size:19px;opacity:.5;transition:opacity .5s}
-.hero.on p{opacity:1}
-.cta{display:flex;gap:14px;flex-wrap:wrap;opacity:.5;transition:opacity .5s}
-.hero.on .cta{opacity:1}
-.ghost{color:#fff;text-decoration:none;padding:14px 24px;border:1px solid rgba(255,255,255,.3);border-radius:999px;font-weight:500}
-.ghost:hover{border-color:var(--volt);color:var(--volt)}
-.sw{justify-self:center;text-align:center}
-.plate{width:168px;height:236px;border-radius:22px;background:linear-gradient(160deg,#f4f4f1,#d9dad6);padding:22px;box-shadow:0 30px 60px -20px #000,inset 0 0 0 2px #fff}
-.rocker{all:unset;cursor:pointer;display:block;width:100%;height:100%;border-radius:14px;background:linear-gradient(#cfd0cc,#eeeeea);box-shadow:inset 0 2px 8px rgba(0,0,0,.25);position:relative;perspective:500px}
-.rocker:focus-visible{outline:3px solid var(--volt);outline-offset:4px}
-.rocker span{position:absolute;inset:8px;border-radius:10px;background:linear-gradient(#fafaf8,#e2e3df);box-shadow:0 8px 14px rgba(0,0,0,.3);transform-origin:center;transform:rotateX(14deg) translateY(-6px);transition:transform .22s cubic-bezier(.3,1.6,.5,1)}
-.hero.on .rocker span{transform:rotateX(-14deg) translateY(6px)}
-.led{width:10px;height:10px;border-radius:50%;background:#3b4a60;margin:0 auto 14px;transition:.3s}
-.hero.on .led{background:var(--volt);box-shadow:0 0 16px 4px var(--volt)}
-.sw small{display:block;margin-top:18px;color:#8ea0b8;font-size:14px}
+/* ---------- buttons, badges ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:8px;font-size:14px;font-weight:500;border:1px solid transparent;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,transform .15s,box-shadow .2s}
+.btn:active{transform:scale(.98)}
+.btn svg{width:16px;height:16px}
+.btn-p{background:var(--gold);color:var(--gold-ink)}
+.btn-p:hover{background:var(--gold-hi);box-shadow:0 0 0 4px var(--gold-soft)}
+.btn-s{background:var(--surface);border-color:var(--border);color:var(--fg)}
+.btn-s:hover{background:var(--raised);border-color:var(--border-hi)}
+.btn-lg{height:44px;padding:0 20px;font-size:15px}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border:1px solid var(--border);border-radius:999px;font-size:12px;font-weight:500;color:var(--muted);background:var(--surface);white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--dim);transition:background .3s,box-shadow .3s}
+.badge.on{color:var(--gold-hi);border-color:rgba(209,164,71,.35);background:var(--gold-soft)}
+.badge.on .dot{background:var(--gold-hi);box-shadow:0 0 8px var(--gold-hi)}
 
-/* services */
-.svc{display:grid;grid-template-columns:.9fr 1.2fr;gap:40px;margin-top:56px}
-.tabs{display:flex;flex-direction:column;gap:10px}
-.tab{all:unset;cursor:pointer;padding:20px 22px;border-radius:16px;border:1px solid var(--line);background:var(--card);font:600 18px/1.3 var(--d);display:flex;gap:16px;align-items:center;transition:transform .2s,border-color .2s}
-.tab:hover{transform:translateX(6px)}
-.tab:focus-visible{outline:3px solid var(--volt)}
-.tab svg{flex:none;width:30px;height:30px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.tab[aria-selected=true]{background:var(--night);color:#fff;border-color:var(--night)}
-.tab[aria-selected=true] svg{stroke:var(--volt)}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:40px;min-height:380px;position:relative;overflow:hidden}
-.panel h3{font-size:30px;margin-bottom:14px}
-.panel ul{padding:0;margin:24px 0 0;list-style:none;display:grid;gap:12px}
-.panel li{padding-left:34px;position:relative}
-.panel li::before{content:"";position:absolute;left:0;top:7px;width:20px;height:2px;background:var(--volt);box-shadow:0 0 8px var(--volt)}
-.panel .big{position:absolute;right:-30px;bottom:-40px;width:240px;height:240px;stroke:var(--line);fill:none;stroke-width:1.4;opacity:.8}
-.panel.swap{animation:sw .35s}
-@keyframes sw{from{opacity:0;transform:translateY(10px)}}
-@media(max-width:860px){.svc{grid-template-columns:1fr}.hero .wrap{grid-template-columns:1fr}.sw{display:none}.hero{--x:50%;--y:30%}}
+/* switch (shadcn-style) */
+.sw{position:relative;flex:none;width:44px;height:24px;border-radius:999px;border:0;background:var(--border-hi);cursor:pointer;transition:background .2s,box-shadow .2s;padding:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.5);transition:transform .25s var(--ease)}
+.sw[aria-checked=true]{background:var(--gold);box-shadow:0 0 14px rgba(209,164,71,.45)}
+.sw[aria-checked=true]::after{transform:translateX(20px);background:#fff}
+.sw[aria-disabled=true]{opacity:.45;cursor:not-allowed}
+.sw-lg{width:56px;height:30px}
+.sw-lg::after{width:26px;height:26px}
+.sw-lg[aria-checked=true]::after{transform:translateX(26px)}
 
-/* trust strip */
-.trust{background:var(--night);color:#fff;padding:72px 0}
-.trust .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
-.trust h3{font-size:26px;margin-bottom:8px;color:var(--volt)}
-.trust p{margin:0;color:#aebdd0}
-@media(max-width:760px){.trust .wrap{grid-template-columns:1fr}}
+/* ---------- hero ---------- */
+.hero{position:relative;padding-block:136px 88px;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background-image:radial-gradient(rgba(244,241,234,.09) 1px,transparent 1px);background-size:22px 22px;-webkit-mask:radial-gradient(ellipse 70% 60% at 65% 40%,#000 30%,transparent 75%);mask:radial-gradient(ellipse 70% 60% at 65% 40%,#000 30%,transparent 75%)}
+.glow{position:absolute;z-index:-1;left:62%;top:44%;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:radial-gradient(circle,rgba(242,203,106,.28),rgba(209,164,71,.08) 35%,transparent 62%);opacity:0;transform:scale(.6);transition:opacity .9s var(--ease),transform 1.2s var(--ease);pointer-events:none}
+.bgmark{position:absolute;z-index:-1;right:-120px;top:40px;width:640px;height:640px;color:var(--gold);opacity:.05;transition:opacity 1s,filter 1s;pointer-events:none}
+.lit .glow{opacity:1;transform:scale(1)}
+.lit .bgmark{opacity:.13;filter:drop-shadow(0 0 40px rgba(242,203,106,.5))}
+.hero-g{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero-t{min-width:0;animation:rise .7s var(--ease) 1.25s backwards}
+.seen .hero-t,.seen .panel{animation-delay:.05s}
+.hero h1{font-size:clamp(40px,6.4vw,76px);font-weight:600;letter-spacing:-.045em;line-height:1.02;margin:22px 0;color:#9b958a;background:linear-gradient(180deg,#B8B2A6,#7E786D);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transition:filter .8s}
+.hero h1 .l{position:relative;display:inline}
+.lit .hero h1{background:linear-gradient(180deg,#FFFFFF 30%,#F2CB6A 140%);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 30px rgba(242,203,106,.18))}
+.hero .sub{font-size:18px;color:var(--muted);max-width:52ch}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px}
+.facts{display:flex;gap:28px;flex-wrap:wrap;margin-top:44px;padding-top:24px;border-top:1px solid var(--border);font-size:14px;color:var(--muted)}
+.facts b{display:block;color:var(--fg);font-weight:500;font-size:15px}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}}
+
+/* distribution board panel */
+.panel{background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--border);border-radius:14px;box-shadow:0 30px 80px -30px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.04);overflow:hidden;animation:rise .7s var(--ease) 1.4s backwards;min-width:0;transition:border-color .6s,box-shadow .6s}
+.power .panel{border-color:rgba(209,164,71,.3);box-shadow:0 30px 80px -30px rgba(0,0,0,.9),0 0 60px -20px rgba(209,164,71,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 20px;border-bottom:1px solid var(--border)}
+.pt{font-weight:600;font-size:15px}
+.ps{font-size:13px;color:var(--muted);margin-top:2px}
+.master{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid var(--border)}
+.master .mt{font-weight:500}
+.master .ms{font:12px var(--mono);color:var(--dim)}
+.master.nudge{animation:nudge .45s}
+.hint-pulse{animation:pulse 1.6s ease-in-out 3}
+@keyframes pulse{50%{box-shadow:0 0 0 7px var(--gold-soft)}}
+@keyframes nudge{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.meter{padding:16px 20px;border-bottom:1px solid var(--border)}
+.mrow{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:10px}
+.mrow b{font:500 13px var(--mono);color:var(--fg)}
+.bar{height:6px;border-radius:6px;background:var(--border);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--gold),var(--gold-hi));transition:width .6s var(--ease)}
+.circ{list-style:none;margin:0;padding:6px 8px}
+.circ li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;transition:background .2s}
+.circ li:hover{background:rgba(255,255,255,.025)}
+.circ .led{width:8px;height:8px;border-radius:50%;background:var(--border-hi);flex:none;transition:.3s}
+.circ li.on .led{background:var(--gold-hi);box-shadow:0 0 10px var(--gold-hi)}
+.circ .cn{font-size:14px;font-weight:500;flex:1;min-width:0}
+.circ .cn small{display:block;font-size:12px;color:var(--dim);font-weight:400}
+.circ .tag{font:500 12px var(--mono);color:var(--muted);padding:2px 7px;border:1px solid var(--border);border-radius:6px}
+.pf{display:flex;gap:20px;padding:14px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--dim);background:rgba(0,0,0,.2)}
+.pf b{font:500 13px var(--mono);color:var(--muted);margin-left:6px;font-variant-numeric:tabular-nums}
+.power .pf b{color:var(--gold-hi)}
+.pnote{font-size:12px;color:var(--dim);padding:0 20px 14px}
+@media(max-width:920px){.hero-g{grid-template-columns:1fr;gap:44px}.bgmark{width:420px;height:420px;right:-140px;top:60px}.glow{left:50%;top:70%}}
+
+/* ---------- sections ---------- */
+section{padding-block:104px}
+.sh{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
+.sh h2{font-size:clamp(30px,4.2vw,46px);letter-spacing:-.035em;max-width:18ch}
+.sh p{color:var(--muted);max-width:46ch;margin-top:14px}
+.areas{border-block:1px solid var(--border);background:var(--surface);padding-block:22px}
+.areas .wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.areas .lbl{font-size:14px;color:var(--muted)}
+.areas .chips{display:flex;gap:8px;flex-wrap:wrap}
+
+/* spotlight cards */
+.spot{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;--mx:50%;--my:50%}
+.spot::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(260px circle at var(--mx) var(--my),rgba(242,203,106,.6),transparent 45%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:0;transition:opacity .3s;pointer-events:none;z-index:2}
+.spot::after{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx) var(--my),rgba(209,164,71,.07),transparent 50%);opacity:0;transition:opacity .3s;pointer-events:none}
+.spot:hover::before,.spot:hover::after,.spot:focus-visible::before{opacity:1}
+
+/* services bento */
+.bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.svc{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:300px;padding:26px;position:relative;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.svc:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.svc.w2{grid-column:span 2}
+.svc .ill{position:relative;z-index:1;height:140px;margin:-6px -6px 18px}
+.svc .ill svg{width:100%;height:100%}
+.svc h3{font-size:20px;position:relative;z-index:1}
+.svc p{color:var(--muted);font-size:15px;margin-top:8px;max-width:48ch;position:relative;z-index:1}
+.svc .more{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-size:14px;font-weight:500;color:var(--gold);position:relative;z-index:1}
+.svc .more svg{width:15px;height:15px;transition:transform .2s}
+.svc:hover .more svg{transform:translateX(3px)}
+.ill .t{stroke:var(--border-hi);fill:none;stroke-width:1.5}
+.ill .c{stroke:var(--gold);fill:none;stroke-width:2;stroke-dasharray:5 7;opacity:.55;transition:opacity .3s}
+.svc:hover .ill .c{opacity:1;animation:flow .9s linear infinite}
+.ill .n{fill:var(--bg);stroke:var(--gold);stroke-width:2}
+.ill text{font:500 10px var(--mono);fill:var(--dim)}
+.brk rect.b{fill:var(--raised);stroke:var(--border-hi)}
+.brk rect.k{fill:var(--dim);transition:transform .25s var(--ease),fill .25s}
+.svc:hover .brk rect.k{transform:translateY(-10px);fill:var(--gold-hi)}
+.gauge .arc{fill:none;stroke:var(--border-hi);stroke-width:8;stroke-linecap:round}
+.gauge .val{fill:none;stroke:var(--gold);stroke-width:8;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:.85;transition:stroke-dashoffset 1s var(--ease)}
+.svc:hover .gauge .val{stroke-dashoffset:.08}
+.gauge .needle{transform-origin:110px 110px;transform:rotate(-80deg);transition:transform 1s var(--ease)}
+.svc:hover .gauge .needle{transform:rotate(68deg)}
+@keyframes flow{to{stroke-dashoffset:-24}}
+@media(max-width:860px){.bento{grid-template-columns:1fr}.svc.w2{grid-column:auto}}
+
+/* tabs */
+.tabs{position:relative;display:inline-flex;padding:4px;border-radius:10px;background:var(--surface);border:1px solid var(--border);gap:2px;max-width:100%;overflow-x:auto}
+.tabs button{position:relative;z-index:1;border:0;background:none;padding:7px 14px;border-radius:7px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;transition:color .2s}
+.tabs button[aria-selected=true]{color:var(--fg)}
+.tabs .ind{position:absolute;top:4px;bottom:4px;left:0;border-radius:7px;background:var(--raised);border:1px solid var(--border-hi);transition:transform .3s var(--ease),width .3s var(--ease);pointer-events:none}
 
 /* projects */
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin:36px 0}
-.chip{all:unset;cursor:pointer;padding:10px 20px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-weight:500;font-size:15px;transition:.2s}
-.chip:hover{border-color:var(--blue)}
-.chip:focus-visible{outline:3px solid var(--volt)}
-.chip[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
-.pc{display:block;text-decoration:none;border-radius:22px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .25s,box-shadow .25s}
-.pc:hover{transform:translateY(-6px);box-shadow:0 24px 40px -24px rgba(16,34,57,.5)}
-.pc .im{height:190px;position:relative;overflow:hidden}
-.pc .im svg{position:absolute;inset:0;width:100%;height:100%}
-.pc .im path{stroke:#fff;stroke-width:2;fill:none;stroke-dasharray:6 8;opacity:.75;transition:stroke-dashoffset 1s}
-.pc:hover .im path{stroke:var(--volt);opacity:1;animation:flow 1s linear infinite}
-@keyframes flow{to{stroke-dashoffset:-28}}
-.pc .tx{padding:22px}
-.pc h3{font-size:21px;margin-bottom:6px}
-.pc p{margin:0;color:var(--mute);font-size:15px}
-.pc b{display:inline-block;margin-top:14px;font-size:15px;color:var(--blue)}
+.pg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pc{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .25s var(--ease),border-color .25s;animation:pop .35s var(--ease) backwards}
+.pc:hover{transform:translateY(-3px);border-color:var(--border-hi)}
+.pc:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.pc .art{height:180px;position:relative;border-bottom:1px solid var(--border);background:radial-gradient(120% 90% at 80% 0%,rgba(209,164,71,.12),transparent 60%),var(--bg)}
+.pc .art svg{position:absolute;inset:0;width:100%;height:100%}
+.pc .art .grid{stroke:rgba(244,241,234,.05)}
+.pc .art .tr{fill:none;stroke:var(--border-hi);stroke-width:2;stroke-linejoin:round}
+.pc .art .tr2{fill:none;stroke:var(--gold);stroke-width:2;stroke-dasharray:6 8;opacity:0;transition:opacity .3s;stroke-linejoin:round}
+.pc:hover .art .tr2{opacity:1;animation:flow .8s linear infinite}
+.pc .art circle{fill:var(--bg);stroke:var(--gold);stroke-width:2}
+.pc .art .badge{position:absolute;top:14px;left:14px}
+.pc .tx{padding:20px}
+.pc h3{font-size:17px}
+.pc p{color:var(--muted);font-size:14px;margin-top:6px}
+.pc .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.pc .meta span{font-size:12px;color:var(--muted);padding:2px 8px;border-radius:6px;background:var(--raised);border:1px solid var(--border)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}}
+@media(max-width:980px){.pg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.pg{grid-template-columns:1fr}}
 
 /* process */
-.steps{margin-top:56px;display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
-.step{padding:0 18px 0 0;position:relative}
-.step::before{content:"";display:block;height:4px;background:var(--line);margin-bottom:22px;border-radius:4px;transition:background .4s,box-shadow .4s}
-.step.lit::before{background:var(--volt);box-shadow:0 0 12px var(--volt)}
-.step h3{font-size:20px;margin-bottom:8px}
-.step p{margin:0;color:var(--mute);font-size:15px}
-.step span{font:800 14px var(--d);color:var(--blue)}
-@media(max-width:860px){.steps{grid-template-columns:1fr;gap:28px}}
+.steps{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px;padding-top:40px}
+.wire{position:absolute;top:13px;left:14px;right:14px;height:2px;background:var(--border);border-radius:2px}
+.wire i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left;background:var(--gold);box-shadow:0 0 10px var(--gold);border-radius:2px}
+.step{min-width:0}
+.step .node{position:absolute;top:0;width:28px;height:28px;border-radius:50%;background:var(--bg);border:2px solid var(--border-hi);display:grid;place-items:center;font:500 12px var(--mono);color:var(--dim);transition:.35s}
+.step{position:relative}
+.step .node{top:-40px}
+.step.lit .node{border-color:var(--gold);color:var(--gold-ink);background:var(--gold);box-shadow:0 0 0 5px var(--gold-soft)}
+.step h3{font-size:17px;margin-bottom:6px}
+.step p{font-size:14px;color:var(--muted)}
+@media(max-width:860px){
+  .steps{grid-template-columns:1fr;gap:28px;padding:0 0 0 48px}
+  .wire{top:6px;bottom:6px;left:13px;right:auto;width:2px;height:auto}
+  .wire i{transform:scaleY(0);transform-origin:top}
+  .step .node{top:-2px;left:-48px}
+}
 
-/* form */
-.contact{background:var(--card);border-top:1px solid var(--line)}
-.cg{display:grid;grid-template-columns:1fr 1.1fr;gap:64px;margin-top:8px}
-.info{margin-top:32px;display:grid;gap:18px}
-.info div{border-left:3px solid var(--volt);padding-left:16px}
-.info small{color:var(--mute);display:block;font-size:14px}
-form{display:grid;gap:18px}
-label{font-weight:600;font-size:15px;display:grid;gap:8px}
-input,textarea{font:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;width:100%;transition:border-color .2s,box-shadow .2s}
-input:focus,textarea:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 4px rgba(47,109,181,.2)}
-input[aria-invalid=true],textarea[aria-invalid=true]{border-color:#D64545}
-.err{color:#D64545;font-size:14px;font-weight:500;min-height:0}
+/* faq */
+.faq-g{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+.acc{border-top:1px solid var(--border)}
+.acc details{border-bottom:1px solid var(--border)}
+.acc summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 2px;font-weight:500;font-size:16px}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary:hover{color:var(--gold-hi)}
+.acc summary svg{width:16px;height:16px;flex:none;color:var(--muted);transition:transform .25s var(--ease)}
+.acc details[open] summary svg{transform:rotate(180deg)}
+.acc .ans{color:var(--muted);padding:0 2px 20px;max-width:62ch;animation:rise .3s var(--ease)}
+@media(max-width:860px){.faq-g{grid-template-columns:1fr;gap:28px}}
+
+/* contact */
+.contact{border-top:1px solid var(--border);background:radial-gradient(60% 50% at 15% 0%,rgba(209,164,71,.07),transparent 70%)}
+.cg{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}
+.info{display:grid;gap:10px;margin-top:32px}
+.irow{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.irow .ic{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold);flex:none}
+.irow .ic svg{width:18px;height:18px}
+.irow small{display:block;font-size:12px;color:var(--dim)}
+.irow div{min-width:0;flex:1}
+.copy{border:1px solid var(--border);background:var(--raised);height:32px;padding:0 10px;border-radius:7px;font-size:12px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:6px}
+.copy:hover{color:var(--fg);border-color:var(--border-hi)}
+.copy svg{width:14px;height:14px}
+.fcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;min-width:0}
+.fcard h3{font-size:18px}
+.fcard .fs{font-size:14px;color:var(--muted);margin-top:4px;margin-bottom:24px}
+form{display:grid;gap:20px}
+.fld{display:grid;gap:8px;min-width:0}
+.fld>label,.lg{font-size:14px;font-weight:500}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-fieldset{border:0;padding:0;margin:0}
-legend{font-weight:600;font-size:15px;margin-bottom:10px;padding:0}
-.ok{display:none;text-align:center;padding:48px 24px;border:1px solid var(--line);border-radius:24px;background:var(--paper)}
-.ok.show{display:block;animation:sw .4s}
-.ok h3{font-size:30px;margin:14px 0 8px}
-@media(max-width:860px){.cg{grid-template-columns:1fr;gap:40px}.two{grid-template-columns:1fr}}
-footer{background:var(--night);color:#8ea0b8;padding:36px 0;font-size:15px}
-footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+.in{width:100%;height:40px;padding:0 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--fg);font:inherit;font-size:15px;transition:border-color .15s,box-shadow .15s}
+textarea.in{height:auto;min-height:112px;padding:10px 12px;resize:vertical;line-height:1.5}
+.in::placeholder{color:var(--dim)}
+.in:hover{border-color:var(--border-hi)}
+.in:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.in[aria-invalid=true]{border-color:var(--danger)}
+.in[aria-invalid=true]:focus{box-shadow:0 0 0 3px rgba(232,112,95,.18)}
+.err{font-size:13px;color:var(--danger)}
+.err:empty{display:none}
+.hintr{display:flex;justify-content:space-between;font-size:12px;color:var(--dim)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);padding:4px;border:1px solid var(--border);border-radius:10px;background:var(--bg);gap:4px}
+.seg input,.chk input{position:absolute;opacity:0;pointer-events:none}
+.seg label{display:block;text-align:center;padding:8px 6px;border-radius:7px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+.seg input:checked+label{background:var(--raised);color:var(--fg);box-shadow:inset 0 0 0 1px var(--border-hi)}
+.seg input:focus-visible+label,.chk input:focus-visible+label{outline:2px solid var(--gold);outline-offset:1px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chk{position:relative}
+.chk label{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--muted);cursor:pointer;background:var(--bg);transition:.15s}
+.chk label::before{content:"";width:14px;height:14px;border-radius:4px;border:1px solid var(--border-hi);transition:.15s;flex:none}
+.chk input:checked+label{color:var(--fg);border-color:rgba(209,164,71,.45);background:var(--gold-soft)}
+.chk input:checked+label::before{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%231A1405' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--gold)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);cursor:pointer}
+.consent input{appearance:none;flex:none;width:16px;height:16px;margin:2px 0 0;border-radius:4px;border:1px solid var(--border-hi);background:var(--bg);cursor:pointer;display:grid;place-items:center}
+.consent input:checked{background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%231A1405' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-7'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--gold)}
+.consent input[aria-invalid=true]{border-color:var(--danger)}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(26,20,5,.3);border-top-color:var(--gold-ink);animation:rot .7s linear infinite;display:none}
+.busy .spin{display:block}
+.busy .bl{opacity:.7}
+@keyframes rot{to{transform:rotate(360deg)}}
+.done{text-align:center;padding:40px 12px;animation:rise .4s var(--ease)}
+.done .ck{width:56px;height:56px;border-radius:50%;margin:0 auto 18px;background:var(--gold-soft);display:grid;place-items:center;color:var(--gold-hi);box-shadow:0 0 0 8px rgba(209,164,71,.05)}
+.done .ck svg{width:26px;height:26px}
+.done h3{font-size:22px}
+.done p{color:var(--muted);margin:8px auto 22px;max-width:40ch}
+@media(max-width:920px){.cg{grid-template-columns:1fr}}
+@media(max-width:560px){.two{grid-template-columns:1fr}.fcard{padding:20px}}
+
+footer{border-top:1px solid var(--border);padding-block:36px;font-size:14px;color:var(--dim)}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+footer .brand{color:var(--muted)}
+
+/* ---------- dialogs, command, toast ---------- */
+dialog{border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--fg);padding:0;width:min(520px,calc(100% - 32px));max-height:calc(100% - 48px);box-shadow:0 40px 100px -20px rgba(0,0,0,.9)}
+dialog[open]{animation:dlg .22s var(--ease)}
+dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+@keyframes dlg{from{opacity:0;transform:translateY(6px) scale(.97)}}
+.dh{padding:24px 24px 0;display:flex;gap:14px;align-items:flex-start}
+.dh .ic{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold);flex:none}
+.dh .ic svg{width:22px;height:22px}
+.dh h3{font-size:19px}
+.dh p{color:var(--muted);font-size:14px;margin-top:4px}
+.x{margin-left:auto;border:0;background:none;color:var(--muted);cursor:pointer;width:32px;height:32px;border-radius:7px;display:grid;place-items:center;flex:none}
+.x:hover{background:var(--raised);color:var(--fg)}
+.x svg{width:16px;height:16px}
+.db{padding:20px 24px}
+.db ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.db li{display:flex;gap:10px;font-size:15px}
+.db li svg{width:18px;height:18px;color:var(--gold);flex:none;margin-top:2px}
+.df{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;background:rgba(0,0,0,.2)}
+#cmd{width:min(560px,calc(100% - 32px));margin-top:12vh}
+.cmd-in{display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--border)}
+.cmd-in svg{width:18px;height:18px;color:var(--muted);flex:none}
+.cmd-in input{flex:1;height:52px;background:none;border:0;color:var(--fg);font:inherit;font-size:15px;outline:none;min-width:0}
+.cmd-l{max-height:min(360px,55vh);overflow-y:auto;padding:8px}
+.cmd-g{font-size:12px;color:var(--dim);padding:8px 10px 6px;font-weight:500}
+.cmd-i{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;font-size:14px;cursor:pointer;color:var(--muted)}
+.cmd-i svg{width:16px;height:16px;flex:none}
+.cmd-i[aria-selected=true]{background:var(--raised);color:var(--fg)}
+.cmd-i[aria-selected=true] svg{color:var(--gold)}
+.cmd-e{padding:28px;text-align:center;color:var(--dim);font-size:14px}
+.cmd-f{display:flex;gap:16px;padding:10px 16px;border-top:1px solid var(--border);font-size:12px;color:var(--dim)}
+.cmd-f kbd{margin:0 4px 0 0}
+#toaster{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:300;display:grid;gap:8px;width:min(360px,calc(100% - 32px))}
+.toast{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid var(--border-hi);border-radius:12px;background:var(--raised);box-shadow:0 20px 50px -10px rgba(0,0,0,.8);animation:tin .35s var(--ease)}
+.toast.out{animation:tout .25s ease forwards}
+.toast svg{width:18px;height:18px;color:var(--gold);flex:none;margin-top:2px}
+.toast b{display:block;font-size:14px;font-weight:600}
+.toast span{font-size:13px;color:var(--muted)}
+@keyframes tin{from{opacity:0;transform:translateY(12px) scale(.96)}}
+@keyframes tout{to{opacity:0;transform:translateX(24px)}}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}html{scroll-behavior:auto}#loader{display:none}}
 </style>
 </head>
 <body>
-<div class="rail" aria-hidden="true"><i id="rail"></i></div>
 
-<nav id="nav"><div class="wrap">
-<a class="logo" href="#top"><b>⚡</b>Electro Energy Solutions</a>
-<div class="links"><a href="#usluge">Usluge</a><a href="#radovi">Radovi</a><a href="#proces">Kako radimo</a><a class="btn" href="#upit">Zatraži ponudu</a></div>
-</div></nav>
+<!-- logo symbol (traced from the company logo) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <path id="eMark" d="M436.2 77.8 171.2 77.8 51.2 264.8 153.2 264.8 154.2 267.8 109.2 346.8 61.2 424.8 121.2 370.8 231.2 264.8 273.2 263.8 283.2 261.8 301.2 254.8 309.2 249.8 323.2 237.8 357.2 193.8 180.2 193.8 179.2 191.8 213.2 148.8 356.2 148.8 372.2 145.8 393.2 136.8 404.2 128.8 412.2 120.8 426.2 99.8ZM120.2 385.8 219.2 385.8 238.2 381.8 251.2 375.8 263.2 366.8 279.2 349.8 299.2 322.8 188.2 322.8 142.2 363.8Z"/>
+    <mask id="ringCut" maskUnits="userSpaceOnUse" x="0" y="0" width="456" height="456">
+      <rect width="456" height="456" fill="#fff"/>
+      <use href="#eMark" fill="#000" stroke="#000" stroke-width="26" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <symbol id="logo" viewBox="0 0 456 456">
+    <circle cx="228" cy="228" r="214" fill="none" stroke="currentColor" stroke-width="10" mask="url(#ringCut)"/>
+    <use href="#eMark" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div id="loader" aria-hidden="true">
+  <svg class="lm" viewBox="0 0 456 456">
+    <g mask="url(#ringCut)"><circle class="ring" cx="228" cy="228" r="214" pathLength="1"/></g>
+    <use class="e" href="#eMark" fill="currentColor"/>
+  </svg>
+  <div class="lbar"><i></i></div>
+</div>
+
+<div class="prog" id="prog"></div>
+<nav id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="Electro Energy Solutions, početak"><svg><use href="#logo"/></svg><span>Electro Energy Solutions</span></a>
+    <div class="nav-links">
+      <a href="#usluge">Usluge</a><a href="#radovi">Radovi</a><a href="#proces">Proces</a><a href="#pitanja">Pitanja</a>
+    </div>
+    <div class="nav-r">
+      <button class="kbtn" id="openCmd" aria-label="Pretraži stranicu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span>Pretraži…</span><kbd id="kbdHint">Ctrl K</kbd>
+      </button>
+      <a class="btn btn-p" href="#upit">Zatraži ponudu</a>
+    </div>
+  </div>
+</nav>
 
 <header class="hero" id="top">
-<div class="grid"></div>
-<div class="wrap">
-<div>
-<h1>Struja koja radi <em>sigurno.</em></h1>
-<p>Izvodimo elektroinstalacije na stambenim, poslovnim i industrijskim objektima u Zagrebu i Zagrebačkoj županiji. Kvaliteta, odgovornost i sigurnost u svakom spoju.</p>
-<div class="cta"><a class="btn" href="#upit">Zatraži ponudu</a><a class="ghost" href="#radovi">Pogledaj radove</a></div>
-</div>
-<div class="sw">
-<div class="plate"><div class="led"></div><button class="rocker" id="rocker" aria-pressed="false" aria-label="Uključi svjetlo"><span></span></button></div>
-<small id="hint">Uključi prekidač</small>
-</div>
-</div>
+  <div class="glow"></div>
+  <svg class="bgmark" aria-hidden="true"><use href="#logo"/></svg>
+  <div class="wrap hero-g">
+    <div class="hero-t">
+      <span class="badge" id="heroBadge"><span class="dot"></span>Zagreb i Zagrebačka županija</span>
+      <h1>Elektroinstalacije za domove, urede i industriju.</h1>
+      <p class="sub">Izvodimo, spajamo i puštamo u pogon elektrotehničke sustave na stambenim, poslovnim i industrijskim objektima. Kvaliteta, odgovornost i sigurnost u svakom spoju.</p>
+      <div class="hero-cta">
+        <a class="btn btn-p btn-lg" href="#upit">Zatraži ponudu</a>
+        <a class="btn btn-s btn-lg" href="#radovi">Pogledaj radove</a>
+      </div>
+      <div class="facts">
+        <div><b>Stambeni objekti</b>stanovi i kuće</div>
+        <div><b>Poslovni prostori</b>uredi i trgovine</div>
+        <div><b>Industrija</b>hale i skladišta</div>
+      </div>
+    </div>
+
+    <div class="panel" aria-label="Interaktivni razvodni ormar">
+      <div class="ph">
+        <div><div class="pt">Razvodni ormar</div><div class="ps">Uključite glavnu sklopku i upalite stranicu</div></div>
+        <span class="badge" id="pstat"><span class="dot"></span><span id="pstatT">Isključeno</span></span>
+      </div>
+      <div class="master" id="masterRow">
+        <div><div class="mt">Glavna sklopka</div><div class="ms">3 × 400 V</div></div>
+        <button class="sw sw-lg" role="switch" aria-checked="false" id="master" aria-label="Glavna sklopka"></button>
+      </div>
+      <div class="meter">
+        <div class="mrow"><span>Opterećenje</span><b id="kw">0,0 kW</b></div>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
+      <ul class="circ" id="circ"></ul>
+      <p class="pnote">Krug rasvjete upravlja svjetlom ove stranice.</p>
+      <div class="pf"><span>Napon<b id="volt">0 V</b></span><span>Frekvencija<b id="hz">0 Hz</b></span></div>
+    </div>
+  </div>
 </header>
 
-<section id="usluge"><div class="wrap">
-<h2>Što sve izvodimo</h2>
-<p class="lead">Od prve trase kabela do puštanja sustava u pogon. Odaberite uslugu i pogledajte što obuhvaća.</p>
-<div class="svc">
-<div class="tabs" role="tablist" id="tabs"></div>
-<div class="panel" id="panel" role="tabpanel" aria-live="polite"></div>
+<div class="areas">
+  <div class="wrap">
+    <span class="lbl">Radimo na objektima svih veličina</span>
+    <div class="chips"><span class="badge">Novogradnja</span><span class="badge">Adaptacije</span><span class="badge">Rekonstrukcije</span><span class="badge">Održavanje sustava</span></div>
+  </div>
 </div>
-</div></section>
 
-<div class="trust"><div class="wrap">
-<div><h3>Kvaliteta</h3><p>Pažljivo izvedene instalacije od materijala na kojima možete graditi godinama.</p></div>
-<div><h3>Odgovornost</h3><p>Radove završavamo dogovorenim rokom i ostavljamo uredno gradilište.</p></div>
-<div><h3>Sigurnost</h3><p>Svaka instalacija se ispituje prije predaje, a sustav puštamo u pogon tek kad je siguran.</p></div>
-</div></div>
+<main>
+<section id="usluge">
+  <div class="wrap">
+    <div class="sh">
+      <div><h2>Od prve trase kabela do puštanja u pogon</h2><p>Cijeli posao radi jedan tim. Odaberite uslugu i pogledajte što obuhvaća.</p></div>
+    </div>
+    <div class="bento" id="bento"></div>
+  </div>
+</section>
 
-<section id="radovi"><div class="wrap">
-<h2>Naši radovi</h2>
-<p class="lead">Odabrani projekti po vrsti objekta. Prijeđite mišem preko kartice i pustite struju kroz trasu.</p>
-<div class="chips" id="chips" role="group" aria-label="Filter projekata"></div>
-<div class="pg" id="pg"></div>
-</div></section>
+<section id="radovi" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh">
+      <div><h2>Odabrani radovi</h2><p>Projekti po vrsti objekta. Otvorite karticu za opseg radova.</p></div>
+      <div class="tabs" role="tablist" id="tabs" aria-label="Vrsta objekta"><span class="ind" id="ind"></span></div>
+    </div>
+    <div class="pg" id="pg"></div>
+  </div>
+</section>
 
-<section id="proces" style="padding-top:0"><div class="wrap">
-<h2>Od upita do pogona</h2>
-<div class="steps" id="steps"></div>
-</div></section>
+<section id="proces" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh"><div><h2>Kako radimo</h2><p>Jasan tijek od prvog poziva do sustava koji radi.</p></div></div>
+    <div class="steps" id="steps"><div class="wire"><i id="wire"></i></div></div>
+  </div>
+</section>
 
-<section class="contact" id="upit"><div class="wrap">
-<div class="cg">
-<div>
-<h2>Recite nam što trebate</h2>
-<p class="lead" style="margin-top:20px">Opišite objekt i radove. Javit ćemo se s prijedlogom obilaska i ponudom.</p>
-<div class="info">
-<div><small>Adresa</small>Savska cesta 41, 10000 Zagreb</div>
-<div><small>Područje rada</small>Grad Zagreb i Zagrebačka županija</div>
-<div><small>Tvrtka</small>Electro Energy Solutions d.o.o.</div>
-</div>
-</div>
-<div>
-<form id="form" novalidate>
-<fieldset><legend>Vrsta objekta</legend>
-<div class="chips" style="margin:0" id="ftype"></div></fieldset>
-<div class="two">
-<label>Ime i prezime<input id="name" autocomplete="name"><span class="err" id="e-name"></span></label>
-<label>Telefon ili e-mail<input id="contact" autocomplete="email"><span class="err" id="e-contact"></span></label>
-</div>
-<label>Opis radova<textarea id="msg" rows="5" placeholder="Npr. nova instalacija u stanu od 70 m², zamjena razvodnog ormara..."></textarea><span class="err" id="e-msg"></span></label>
-<button class="btn" type="submit" style="justify-content:center">Pošalji upit</button>
-</form>
-<div class="ok" id="ok" role="status"><svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#2F6DB5" stroke-width="3" stroke-linecap="round"><circle cx="28" cy="28" r="24"/><path d="M17 29l8 8 14-17" stroke="#FFC83D"/></svg><h3>Upit je poslan</h3><p class="lead" style="margin:0 auto" id="okmsg"></p></div>
-</div>
-</div>
-</div></section>
+<section id="pitanja" style="padding-top:0">
+  <div class="wrap faq-g">
+    <div class="sh" style="margin:0;display:block"><h2>Česta pitanja</h2><p>Ne vidite svoje pitanje? Pošaljite ga kroz obrazac ispod.</p></div>
+    <div class="acc" id="acc"></div>
+  </div>
+</section>
 
-<footer><div class="wrap"><span>© <span id="yr"></span> Electro Energy Solutions d.o.o.</span><span>Savska cesta 41, 10000 Zagreb</span></div></footer>
+<section class="contact" id="upit">
+  <div class="wrap cg">
+    <div>
+      <div class="sh" style="margin:0;display:block"><h2>Zatražite ponudu</h2><p>Opišite objekt i radove. Javit ćemo vam se s prijedlogom termina za obilazak i ponudom.</p></div>
+      <div class="info">
+        <div class="irow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+          <div><small>Adresa</small><span id="addr">Savska cesta 41, 10000 Zagreb</span></div>
+          <button class="copy" id="copyAddr" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Kopiraj</span></button>
+        </div>
+        <div class="irow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <div><small>Područje rada</small>Grad Zagreb i Zagrebačka županija</div>
+        </div>
+        <div class="irow">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>
+          <div><small>Tvrtka</small>Electro Energy Solutions d.o.o.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fcard" id="fcard">
+      <div id="formWrap">
+        <h3>Upit za ponudu</h3>
+        <p class="fs">Polja označena obavezna su za slanje.</p>
+        <form id="form" novalidate>
+          <div class="fld">
+            <span class="lg" id="typeL">Vrsta objekta</span>
+            <div class="seg" role="radiogroup" aria-labelledby="typeL">
+              <input type="radio" name="type" id="t1" value="Stambeni" checked><label for="t1">Stambeni</label>
+              <input type="radio" name="type" id="t2" value="Poslovni"><label for="t2">Poslovni</label>
+              <input type="radio" name="type" id="t3" value="Industrijski"><label for="t3">Industrijski</label>
+            </div>
+          </div>
+          <div class="fld">
+            <span class="lg" id="svcL">Usluge</span>
+            <div class="chips" id="svcChips" role="group" aria-labelledby="svcL"></div>
+          </div>
+          <div class="two">
+            <div class="fld"><label for="fName">Ime i prezime (obavezno)</label><input class="in" id="fName" autocomplete="name" placeholder="Ivan Horvat" aria-describedby="eName"><span class="err" id="eName"></span></div>
+            <div class="fld"><label for="fContact">Telefon ili e-mail (obavezno)</label><input class="in" id="fContact" autocomplete="email" placeholder="091 234 5678" aria-describedby="eContact"><span class="err" id="eContact"></span></div>
+          </div>
+          <div class="fld">
+            <label for="fMsg">Opis radova (obavezno)</label>
+            <textarea class="in" id="fMsg" maxlength="600" placeholder="Npr. nova instalacija u stanu od 70 m², zamjena razvodnog ormara…" aria-describedby="eMsg cMsg"></textarea>
+            <div class="hintr"><span class="err" id="eMsg"></span><span id="cMsg" style="margin-left:auto">0 / 600</span></div>
+          </div>
+          <label class="consent"><input type="checkbox" id="fConsent" aria-describedby="eConsent"><span>Slažem se da me Electro Energy Solutions kontaktira u vezi s ovim upitom.</span></label>
+          <span class="err" id="eConsent" style="margin-top:-12px"></span>
+          <button class="btn btn-p btn-lg" type="submit" id="submit"><span class="spin"></span><span class="bl">Pošalji upit</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand"><svg><use href="#logo"/></svg>© <span id="yr">2026</span> Electro Energy Solutions d.o.o.</span>
+    <span>Savska cesta 41, 10000 Zagreb</span>
+  </div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlgT"></dialog>
+
+<dialog id="cmd" aria-label="Pretraga">
+  <div class="cmd-in">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="cmdQ" placeholder="Upišite uslugu, sekciju ili radnju…" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="cmdL">
+  </div>
+  <div class="cmd-l" id="cmdL" role="listbox"></div>
+  <div class="cmd-f"><span><kbd>↑↓</kbd>odabir</span><span><kbd>Enter</kbd>otvori</span><span><kbd>Esc</kbd>zatvori</span></div>
+</dialog>
+
+<div id="toaster" aria-live="polite"></div>
 
 <script>
-const $=s=>document.querySelector(s);
-const bolt='<svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>';
-const SERVICES=[
-{t:'Elektroinstalacijski radovi',i:'<path d="M3 21V9l9-6 9 6v12z"/><path d="M9 21v-6h6v6"/>',d:'Izvodimo kompletne elektroinstalacije na stambenim, poslovnim i industrijskim objektima, od novogradnje do adaptacije.',l:['Nove instalacije u stanovima i kućama','Poslovni prostori i uredi','Industrijski i skladišni objekti','Adaptacije i dogradnje postojećih instalacija']},
-{t:'Povlačenje kabela i montaža opreme',i:'<path d="M3 17c5 0 5-10 9-10s4 10 9 10"/><circle cx="3" cy="17" r="1.5"/><circle cx="21" cy="17" r="1.5"/>',d:'Planiramo trase, povlačimo kabele i montiramo elektro opremu uredno i prema projektu.',l:['Polaganje kabela i kabelskih trasa','Montaža utičnica, sklopki i rasvjete','Montaža elektro opreme prema projektu','Uredno označavanje vodova']},
-{t:'Montaža, demontaža i puštanje u pogon',i:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',d:'Montiramo i demontiramo instalacije te puštamo elektrotehničke sustave u pogon uz provjeru ispravnosti.',l:['Montaža novih instalacija','Sigurna demontaža postojećih','Ispitivanje prije predaje','Puštanje elektrotehničkih sustava u pogon']},
-{t:'Razvodni ormari',i:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8M8 12h8M8 17h4"/>',d:'Spajamo i montiramo razvodne ormare, od stambenih do industrijskih, s preglednim i označenim ožičenjem.',l:['Montaža razvodnih ormara','Spajanje i označavanje strujnih krugova','Zamjena i nadogradnja postojećih ormara','Predaja s urednom dokumentacijom']}];
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const I={
+  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  cable:'<path d="M4 18c4 0 4-12 8-12s4 12 8 12"/><circle cx="4" cy="18" r="1.6"/><circle cx="20" cy="18" r="1.6"/>',
+  power:'<path d="M12 3v8"/><path d="M6.3 7.2a8 8 0 1 0 11.4 0"/>',
+  panel:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h2M8 12h2M8 16h2M14 8h2M14 12h2M14 16h2"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  hash:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
+  zap:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+  copy:'<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+  send:'<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+  chev:'<path d="m6 9 6 6 6-6"/>'
+};
+const ic=(n,sw=2)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
+
+/* ---------- content ---------- */
+const SVC=[
+ {id:'inst',t:'Elektroinstalacijski radovi',i:'home',w:2,ill:'plan',
+  d:'Kompletne elektroinstalacije za stambene, poslovne i industrijske objekte, u novogradnji i kod adaptacija.',
+  l:['Nove instalacije u stanovima i kućama','Poslovni prostori, uredi i trgovine','Industrijski i skladišni objekti','Adaptacije i dogradnje postojećih instalacija']},
+ {id:'kab',t:'Povlačenje kabela i montaža opreme',i:'cable',ill:'wires',
+  d:'Planiramo trase, povlačimo kabele i montiramo opremu uredno, prema projektu.',
+  l:['Polaganje kabela i kabelskih trasa','Montaža utičnica, sklopki i rasvjete','Montaža elektro opreme prema projektu','Označavanje vodova i strujnih krugova']},
+ {id:'pog',t:'Montaža, demontaža i puštanje u pogon',i:'power',ill:'gauge',
+  d:'Montiramo i demontiramo instalacije te puštamo elektrotehničke sustave u pogon nakon provjere.',
+  l:['Montaža novih instalacija','Sigurna demontaža postojećih instalacija','Ispitivanje ispravnosti prije predaje','Puštanje elektrotehničkih sustava u pogon']},
+ {id:'orm',t:'Spajanje i montaža razvodnih ormara',i:'panel',w:2,ill:'breakers',
+  d:'Razvodni ormari od stambenih do industrijskih, s preglednim i označenim ožičenjem.',
+  l:['Montaža novih razvodnih ormara','Spajanje i označavanje strujnih krugova','Zamjena i nadogradnja postojećih ormara','Predaja s urednom dokumentacijom']}
+];
+/* Primjeri projekata: zamijenite stvarnim radovima (naziv, lokacija, opseg). */
 const PROJ=[
-{n:'Novogradnja, stambena zgrada',k:'stambeni',p:'Kompletna instalacija stanova i zajedničkih prostora.',c:['#2F6DB5','#102239']},
-{n:'Adaptacija obiteljske kuće',k:'stambeni',p:'Nova instalacija i novi razvodni ormar.',c:['#4F8BD0','#1B3A66']},
-{n:'Uredski prostor, Zagreb',k:'poslovni',p:'Rasvjeta, utičnice i podatkovne trase.',c:['#6B7F99','#0D1B2E']},
-{n:'Trgovački prostor',k:'poslovni',p:'Instalacija, rasvjeta i razvod.',c:['#2F6DB5','#0D1B2E']},
-{n:'Proizvodna hala',k:'industrijski',p:'Kabelske trase i razvodni ormari.',c:['#C99A1E','#102239']},
-{n:'Skladišni centar',k:'industrijski',p:'Montaža opreme i puštanje u pogon.',c:['#3A5A85','#0D1B2E']}];
-const STEPS=[['Upit','Opišete nam objekt i radove.'],['Obilazak','Dolazimo na lokaciju i procjenjujemo opseg.'],['Ponuda','Dobivate jasnu ponudu.'],['Izvedba','Radimo uredno i u dogovorenom roku.'],['Pogon','Ispitujemo i puštamo sustav u pogon.']];
-const TYPES={svi:'Svi',stambeni:'Stambeni',poslovni:'Poslovni',industrijski:'Industrijski'};
+ {n:'Stambena zgrada, novogradnja',k:'Stambeni',loc:'Zagreb',d:'Instalacija stanova i zajedničkih prostora.',s:['Elektroinstalacije','Razvodni ormari','Puštanje u pogon']},
+ {n:'Obiteljska kuća, adaptacija',k:'Stambeni',loc:'Zagrebačka županija',d:'Nova instalacija i novi razvodni ormar.',s:['Demontaža','Elektroinstalacije','Razvodni ormar']},
+ {n:'Uredski prostor',k:'Poslovni',loc:'Zagreb',d:'Rasvjeta, utičnice i kabelske trase.',s:['Kabelske trase','Rasvjeta','Utičnice']},
+ {n:'Trgovina',k:'Poslovni',loc:'Zagreb',d:'Instalacija prodajnog prostora i rasvjeta.',s:['Elektroinstalacije','Rasvjeta']},
+ {n:'Proizvodna hala',k:'Industrijski',loc:'Zagrebačka županija',d:'Kabelske trase i razvodni ormari za strojeve.',s:['Kabelske trase','Razvodni ormari']},
+ {n:'Skladišni prostor',k:'Industrijski',loc:'Zagrebačka županija',d:'Montaža opreme i puštanje sustava u pogon.',s:['Montaža opreme','Puštanje u pogon']}
+];
+const STEPS=[['Upit','Opišete objekt i radove kroz obrazac.'],['Obilazak','Dolazimo na lokaciju i procjenjujemo opseg.'],['Ponuda','Dobivate jasnu ponudu s opisom radova.'],['Izvedba','Radimo uredno i u dogovorenom roku.'],['Puštanje u pogon','Ispitujemo instalaciju i predajemo sustav.']];
+const FAQ=[
+ ['Na kojem području radite?','Radimo na području Grada Zagreba i Zagrebačke županije, na stambenim, poslovnim i industrijskim objektima.'],
+ ['Kako dolazim do ponude?','Pošaljite upit s opisom objekta i radova. Dogovorit ćemo obilazak lokacije, a nakon toga dobivate ponudu s opisom radova.'],
+ ['Radite li i manje zahvate?','Da. Osim kompletnih instalacija radimo i zamjene razvodnih ormara, dogradnje i adaptacije postojećih instalacija.'],
+ ['Što se događa nakon izvedbe?','Instalaciju ispitujemo prije predaje i sustav puštamo u pogon tek kada je ispravan i siguran.']
+];
+const CIRC=[{n:'Rasvjeta',s:'upravlja svjetlom stranice',b:'B10',kw:.6},{n:'Utičnice',s:'dnevni boravak',b:'B16',kw:1.4},{n:'Kupaonica',s:'zaštita FID 30 mA',b:'B16',kw:.9},{n:'Klima uređaj',s:'zaseban krug',b:'B16',kw:1.3}];
 
-/* hero: flashlight + switch */
-const hero=$('.hero');
-const move=e=>{const r=hero.getBoundingClientRect(),p=e.touches?e.touches[0]:e;hero.style.setProperty('--x',(p.clientX-r.left)+'px');hero.style.setProperty('--y',(p.clientY-r.top)+'px')};
-hero.addEventListener('pointermove',move);hero.addEventListener('touchmove',move,{passive:true});
-const rk=$('#rocker');
-rk.onclick=()=>{const on=hero.classList.toggle('on');rk.setAttribute('aria-pressed',on);rk.setAttribute('aria-label',on?'Isključi svjetlo':'Uključi svjetlo');$('#hint').textContent=on?'Struja je tu.':'Uključi prekidač'};
-if(innerWidth<860)hero.classList.add('on');
+/* ---------- loader (skip on repeat visit this session) ---------- */
+let seen=false;
+try{seen=sessionStorage.getItem('ees-seen')==='1';sessionStorage.setItem('ees-seen','1')}catch(e){}
+if(seen)document.documentElement.classList.add('seen');
+const loader=$('#loader');
+setTimeout(()=>loader.remove(),seen?0:1700);
 
-/* services */
-const tabs=$('#tabs'),panel=$('#panel');
-SERVICES.forEach((s,i)=>{const b=document.createElement('button');b.className='tab';b.role='tab';b.id='t'+i;b.innerHTML=`<svg viewBox="0 0 24 24">${s.i}</svg><span>${s.t}</span>`;b.onclick=()=>show(i);tabs.append(b)});
-function show(i){const s=SERVICES[i];[...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected',i===j));
-panel.setAttribute('aria-labelledby','t'+i);panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
-panel.innerHTML=`<h3>${s.t}</h3><p class="lead">${s.d}</p><ul>${s.l.map(x=>`<li>${x}</li>`).join('')}</ul><svg class="big" viewBox="0 0 24 24">${s.i}</svg>`}
-tabs.addEventListener('keydown',e=>{const n=SERVICES.length,c=[...tabs.children].findIndex(b=>b===document.activeElement);if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const j=(c+(e.key==='ArrowDown'?1:n-1))%n;show(j);tabs.children[j].focus()}});
-show(0);
+/* ---------- distribution board ---------- */
+const hero=$('.hero'),root=document.documentElement,master=$('#master'),circ=$('#circ');
+circ.innerHTML=CIRC.map((c,i)=>`<li id="c${i}"><span class="led"></span><span class="cn">${c.n}<small>${c.s}</small></span><span class="tag">${c.b}</span><button class="sw" role="switch" aria-checked="false" aria-disabled="true" aria-label="${c.n}" data-i="${i}"></button></li>`).join('');
+const state=CIRC.map(()=>false);let mOn=false,timers=[];
+const fmt=n=>n.toFixed(1).replace('.',',');
+function count(el,to,unit){const from=parseFloat(el.textContent)||0,t0=performance.now(),dur=500;
+  (function f(t){const p=Math.min(1,(t-t0)/dur),v=from+(to-from)*(1-Math.pow(1-p,3));el.textContent=Math.round(v)+' '+unit;if(p<1)requestAnimationFrame(f)})(t0)}
+function render(){
+  master.setAttribute('aria-checked',mOn);
+  state.forEach((on,i)=>{const li=$('#c'+i),b=li.querySelector('.sw');li.classList.toggle('on',mOn&&on);b.setAttribute('aria-checked',mOn&&on);b.setAttribute('aria-disabled',!mOn)});
+  const kw=mOn?CIRC.reduce((a,c,i)=>a+(state[i]?c.kw:0),0):0;
+  $('#kw').textContent=fmt(kw)+' kW';$('#bar').style.width=(kw/5*100)+'%';
+  root.classList.toggle('power',mOn);
+  const lit=mOn&&state[0];root.classList.toggle('lit',lit);
+  const ps=$('#pstat');ps.classList.toggle('on',mOn);$('#pstatT').textContent=mOn?'Pod naponom':'Isključeno';
+  $('#heroBadge').classList.toggle('on',lit);
+}
+master.addEventListener('click',()=>{
+  timers.forEach(clearTimeout);timers=[];
+  mOn=!mOn;master.classList.remove('hint-pulse');
+  if(mOn){state.fill(false);render();count($('#volt'),230,'V');count($('#hz'),50,'Hz');
+    CIRC.forEach((_,i)=>timers.push(setTimeout(()=>{state[i]=true;render()},180+i*150)));
+  }else{state.fill(false);render();count($('#volt'),0,'V');count($('#hz'),0,'Hz')}
+});
+circ.addEventListener('click',e=>{const b=e.target.closest('.sw');if(!b)return;
+  if(!mOn){const r=$('#masterRow');r.classList.remove('nudge');void r.offsetWidth;r.classList.add('nudge');master.focus();toast('Glavna sklopka je isključena','Prvo uključite glavnu sklopku, zatim pojedine krugove.','zap');return}
+  const i=+b.dataset.i;state[i]=!state[i];render()});
+setTimeout(()=>{if(!mOn)master.classList.add('hint-pulse')},seen?600:1900);
+render();
 
-/* projects: replace href "#" with real links to your case studies */
-const chips=$('#chips'),pg=$('#pg');
-Object.entries(TYPES).forEach(([k,v])=>{const b=document.createElement('button');b.className='chip';b.textContent=v;b.dataset.k=k;b.setAttribute('aria-pressed',k==='svi');b.onclick=()=>{[...chips.children].forEach(c=>c.setAttribute('aria-pressed',c===b));draw(k)};chips.append(b)});
-function draw(k){pg.innerHTML=PROJ.filter(p=>k==='svi'||p.k===k).map((p,i)=>`<a class="pc" href="#">
-<div class="im" style="background:linear-gradient(135deg,${p.c[0]},${p.c[1]})"><svg viewBox="0 0 300 190" preserveAspectRatio="none"><path d="M0 ${60+i*12}H90V${130-i*8}H190V50H300"/><path d="M0 150H60V${100+i*6}H230V160H300" style="opacity:.4"/></svg></div>
-<div class="tx"><h3>${p.n}</h3><p>${p.p}</p><b>Pogledaj projekt</b></div></a>`).join('')}
-draw('svi');
+/* ---------- services bento ---------- */
+const ILL={
+ plan:`<svg viewBox="0 0 420 140" preserveAspectRatio="xMidYMid meet"><rect class="t" x="20" y="10" width="380" height="120" rx="4"/><path class="t" d="M150 10v70M150 100v30M270 10v50M270 80v50M150 80h60M230 80h40"/><path class="c" d="M60 120V40h70v60h50V30h70v80h60V50h60"/><circle class="n" cx="60" cy="120" r="5"/><circle class="n" cx="180" cy="30" r="5"/><circle class="n" cx="310" cy="110" r="5"/><circle class="n" cx="370" cy="50" r="5"/><text x="28" y="26">dnevni boravak</text><text x="160" y="124">kuhinja</text><text x="280" y="26">spavaća</text></svg>`,
+ wires:`<svg viewBox="0 0 260 140"><g fill="none" stroke-width="5" stroke-linecap="round"><path d="M10 30C90 30 120 70 250 50" stroke="#7A4E2D"/><path d="M10 50C90 50 120 85 250 68" stroke="#2A2A28"/><path d="M10 70C90 70 120 100 250 86" stroke="#8B8B86"/><path d="M10 90C90 90 120 115 250 104" stroke="#3E6FB0"/><path d="M10 110C90 110 120 130 250 122" stroke="#9DB33B" stroke-dasharray="10 8"/></g><path class="c" d="M10 110C90 110 120 130 250 122" style="stroke:#C9A63F;stroke-dasharray:10 8;opacity:.9"/><g><text x="12" y="24">L1</text><text x="34" y="24">L2</text><text x="56" y="24">L3</text><text x="78" y="24">N</text><text x="94" y="24">PE</text></g></svg>`,
+ gauge:`<svg viewBox="0 0 220 140" class="gauge"><path class="arc" d="M30 120a80 80 0 0 1 160 0"/><path class="val" pathLength="1" d="M30 120a80 80 0 0 1 160 0"/><g class="needle"><path d="M110 110 110 52" stroke="var(--fg)" stroke-width="3" stroke-linecap="round"/></g><circle cx="110" cy="110" r="7" fill="var(--gold)"/><text x="24" y="138">0 V</text><text x="170" y="138">230 V</text></svg>`,
+ breakers:`<svg viewBox="0 0 420 140" class="brk"><rect x="14" y="16" width="392" height="108" rx="8" fill="none" stroke="var(--border-hi)"/><path d="M30 34h360" stroke="var(--border-hi)" stroke-dasharray="3 4"/>${Array.from({length:9},(_,i)=>`<rect class="b" x="${34+i*40}" y="46" width="30" height="64" rx="4"/><rect class="k" x="${43+i*40}" y="80" width="12" height="18" rx="2" style="transition-delay:${i*45}ms"/><text x="${37+i*40}" y="122">${i?(i<4?'B16':'B10'):'FID'}</text>`).join('')}</svg>`
+};
+const bento=$('#bento');
+bento.innerHTML=SVC.map((s,i)=>`<button class="svc spot${s.w?' w2':''}" data-i="${i}" aria-haspopup="dialog"><div class="ill">${ILL[s.ill]}</div><div><h3>${s.t}</h3><p>${s.d}</p><span class="more">Što uključuje ${ic('arrow')}</span></div></button>`).join('');
+bento.addEventListener('click',e=>{const c=e.target.closest('.svc');if(c)openSvc(+c.dataset.i)});
 
-/* process lights up on view */
-$('#steps').innerHTML=STEPS.map((s,i)=>`<div class="step"><span>${i+1}</span><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join('').replace(/<span>/g,'<span>Korak ');
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)[...document.querySelectorAll('.step')].forEach((s,i)=>setTimeout(()=>s.classList.add('lit'),i*350))}),{threshold:.5});
-io.observe($('#steps'));
+/* spotlight follow */
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.spot');if(!c)return;const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')},{passive:true});
 
-/* form */
-const ft=$('#ftype');let ftype='Stambeni';
-['Stambeni','Poslovni','Industrijski'].forEach(v=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=v;b.setAttribute('aria-pressed',v===ftype);b.onclick=()=>{ftype=v;[...ft.children].forEach(c=>c.setAttribute('aria-pressed',c===b))};ft.append(b)});
-const rules={name:v=>v.trim().length<2&&'Upišite ime i prezime.',contact:v=>!(/^\S+@\S+\.\S+$/.test(v.trim())||v.replace(/\D/g,'').length>=7)&&'Upišite ispravan e-mail ili broj telefona.',msg:v=>v.trim().length<10&&'Opišite radove u barem nekoliko riječi.'};
-$('#form').addEventListener('submit',e=>{e.preventDefault();let bad=0;
-for(const k in rules){const el=$('#'+(k==='contact'?'contact':k)),m=rules[k](el.value);$('#e-'+k).textContent=m||'';el.setAttribute('aria-invalid',!!m);if(m&&!bad){el.focus();bad=1}else if(m)bad=1}
-if(bad)return;
-$('#form').style.display='none';$('#okmsg').textContent=`Hvala, ${$('#name').value.trim().split(' ')[0]}. Javit ćemo vam se na ${$('#contact').value.trim()} u najkraćem roku.`;$('#ok').classList.add('show')});
+/* ---------- dialog ---------- */
+const dlg=$('#dlg');
+function openDlg(html){dlg.innerHTML=html;dlg.showModal();dlg.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>dlg.close())}
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+function openSvc(i){const s=SVC[i];
+  openDlg(`<div class="dh"><span class="ic">${ic(s.i)}</span><div><h3 id="dlgT">${s.t}</h3><p>${s.d}</p></div><button class="x" data-close aria-label="Zatvori">${ic('x')}</button></div>
+  <div class="db"><ul>${s.l.map(x=>`<li>${ic('check')}${x}</li>`).join('')}</ul></div>
+  <div class="df"><button class="btn btn-s" data-close>Zatvori</button><button class="btn btn-p" id="dlgGo">Zatraži ponudu za ovo</button></div>`);
+  $('#dlgGo').onclick=()=>{dlg.close();const cb=$('#sv-'+s.id);if(cb)cb.checked=true;$('#upit').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});setTimeout(()=>$('#fName').focus({preventScroll:true}),500)};
+}
+function openProj(p){
+  openDlg(`<div class="dh"><span class="ic">${ic(p.k==='Industrijski'?'panel':p.k==='Poslovni'?'cable':'home')}</span><div><h3 id="dlgT">${p.n}</h3><p>${p.loc} · ${p.k} objekt</p></div><button class="x" data-close aria-label="Zatvori">${ic('x')}</button></div>
+  <div class="db"><p class="muted" style="margin-bottom:16px">${p.d}</p><ul>${p.s.map(x=>`<li>${ic('check')}${x}</li>`).join('')}</ul></div>
+  <div class="df"><button class="btn btn-s" data-close>Zatvori</button><a class="btn btn-p" href="#upit" data-close>Zatraži sličan projekt</a></div>`);
+}
 
-/* nav + rail */
-const nav=$('#nav'),rail=$('#rail');
-const onS=()=>{nav.classList.toggle('solid',scrollY>hero.offsetHeight-90);const h=document.documentElement.scrollHeight-innerHeight;rail.style.height=(h>0?scrollY/h*100:0)+'%'};
-addEventListener('scroll',onS,{passive:true});onS();
-$('#yr').textContent=new Date().getFullYear();
+/* ---------- projects ---------- */
+const tabs=$('#tabs'),ind=$('#ind'),pg=$('#pg');
+['Svi','Stambeni','Poslovni','Industrijski'].forEach((t,i)=>{const b=document.createElement('button');b.role='tab';b.textContent=t;b.setAttribute('aria-selected',!i);b.tabIndex=i?-1:0;b.onclick=()=>pick(b);tabs.append(b)});
+function moveInd(){const b=tabs.querySelector('[aria-selected=true]');ind.style.width=b.offsetWidth+'px';ind.style.transform=`translateX(${b.offsetLeft}px)`}
+function pick(b){tabs.querySelectorAll('button').forEach(x=>{x.setAttribute('aria-selected',x===b);x.tabIndex=x===b?0:-1});moveInd();draw(b.textContent)}
+tabs.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const bs=[...tabs.querySelectorAll('button')],c=bs.findIndex(x=>x.getAttribute('aria-selected')==='true'),n=bs[(c+(e.key==='ArrowRight'?1:bs.length-1))%bs.length];pick(n);n.focus()});
+function art(seed){let x=0,y=40+(seed*37)%90,d=`M0 ${y}`,pts=[];const r=k=>((seed+1)*9301+k*49297)%233280/233280;
+  for(let k=0;k<5;k++){x+=50+r(k)*40;d+=`H${x|0}`;pts.push([x|0,y]);y=30+r(k+7)*120|0;d+=`V${y}`}d+='H400';
+  let grid='';for(let gx=0;gx<=400;gx+=20)grid+=`M${gx} 0V180`;for(let gy=0;gy<=180;gy+=20)grid+=`M0 ${gy}H400`;
+  return `<svg viewBox="0 0 400 180" preserveAspectRatio="xMidYMid slice"><path class="grid" d="${grid}"/><path class="tr" d="${d}"/><path class="tr2" d="${d}"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4"/>`).join('')}</svg>`}
+function draw(k){const list=PROJ.map((p,i)=>({p,i})).filter(o=>k==='Svi'||o.p.k===k);
+  pg.innerHTML=list.map((o,j)=>`<button class="pc" data-i="${o.i}" style="animation-delay:${j*50}ms" aria-haspopup="dialog"><div class="art">${art(o.i)}<span class="badge">${o.p.k}</span></div><div class="tx"><h3>${o.p.n}</h3><p>${o.p.d}</p><div class="meta">${o.p.s.map(s=>`<span>${s}</span>`).join('')}</div></div></button>`).join('')}
+pg.addEventListener('click',e=>{const c=e.target.closest('.pc');if(c)openProj(PROJ[+c.dataset.i])});
+draw('Svi');requestAnimationFrame(moveInd);addEventListener('resize',moveInd);
+if(document.fonts)document.fonts.ready.then(moveInd);
+
+/* ---------- process ---------- */
+$('#steps').insertAdjacentHTML('beforeend',STEPS.map((s,i)=>`<div class="step"><span class="node">${i+1}</span><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join(''));
+const stepEls=$$('.step'),wire=$('#wire'),stepsBox=$('#steps');
+
+/* ---------- faq ---------- */
+$('#acc').innerHTML=FAQ.map(f=>`<details><summary>${f[0]}${ic('chev')}</summary><p class="ans">${f[1]}</p></details>`).join('');
+
+/* ---------- form ---------- */
+$('#svcChips').innerHTML=SVC.map(s=>`<span class="chk"><input type="checkbox" id="sv-${s.id}" value="${s.t}"><label for="sv-${s.id}">${s.t.replace('Spajanje i montaža razvodnih ormara','Razvodni ormari').replace('Montaža, demontaža i puštanje u pogon','Puštanje u pogon').replace('Povlačenje kabela i montaža opreme','Kabeli i oprema')}</label></span>`).join('');
+const msg=$('#fMsg');msg.addEventListener('input',()=>$('#cMsg').textContent=msg.value.length+' / 600');
+const rules=[
+ ['fName','eName',v=>v.trim().length<2?'Upišite ime i prezime.':''],
+ ['fContact','eContact',v=>{const t=v.trim();return /^\S+@\S+\.\S{2,}$/.test(t)||t.replace(/\D/g,'').length>=8?'':'Upišite e-mail ili broj telefona s barem 8 znamenki.'}],
+ ['fMsg','eMsg',v=>v.trim().length<15?'Opišite radove u barem jednoj rečenici.':'']
+];
+rules.forEach(([f,e,fn])=>$('#'+f).addEventListener('input',ev=>{if(ev.target.getAttribute('aria-invalid')==='true'){const m=fn(ev.target.value);$('#'+e).textContent=m;ev.target.setAttribute('aria-invalid',!!m)}}));
+$('#form').addEventListener('submit',e=>{e.preventDefault();let first=null;
+  rules.forEach(([f,er,fn])=>{const el=$('#'+f),m=fn(el.value);$('#'+er).textContent=m;el.setAttribute('aria-invalid',!!m);if(m&&!first)first=el});
+  const c=$('#fConsent');const cm=c.checked?'':'Potvrdite da vas smijemo kontaktirati.';$('#eConsent').textContent=cm;c.setAttribute('aria-invalid',!!cm);if(cm&&!first)first=c;
+  if(first){first.focus();return}
+  const btn=$('#submit');btn.classList.add('busy');btn.disabled=true;$('.bl').textContent='Šaljem upit…';
+  /* Spojite na svoj backend ili servis za obrasce ovdje (fetch/POST). */
+  setTimeout(()=>{const name=$('#fName').value.trim().split(/\s+/)[0],ct=$('#fContact').value.trim();
+    $('#formWrap').innerHTML=`<div class="done" role="status"><div class="ck">${ic('check',2.4)}</div><h3>Upit je poslan</h3><p>Hvala, ${esc(name)}. Javit ćemo vam se na ${esc(ct)} s prijedlogom termina za obilazak.</p><button class="btn btn-s" id="again">Pošalji novi upit</button></div>`;
+    $('#again').onclick=()=>location.reload();
+    toast('Upit je poslan','Odgovor stiže na kontakt koji ste upisali.','send');
+  },1100);
+});
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+/* copy address */
+$('#copyAddr').addEventListener('click',()=>{const t=$('#addr').textContent;
+  const ok=()=>{$('#copyAddr span').textContent='Kopirano';toast('Adresa je kopirana',t,'copy');setTimeout(()=>$('#copyAddr span').textContent='Kopiraj',1800)};
+  const fb=()=>{const r=document.createRange();r.selectNodeContents($('#addr'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Adresa je označena','Kopirajte je s Ctrl+C.','copy')};
+  try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}});
+
+/* ---------- toast ---------- */
+function toast(title,desc,icon='check'){const t=document.createElement('div');t.className='toast';t.innerHTML=`${ic(icon)}<div><b>${title}</b><span>${desc}</span></div>`;$('#toaster').append(t);
+  setTimeout(()=>{t.classList.add('out');t.addEventListener('animationend',()=>t.remove())},3200)}
+
+/* ---------- command palette ---------- */
+const cmd=$('#cmd'),q=$('#cmdQ'),cl=$('#cmdL');
+const go=id=>()=>$(id).scrollIntoView({behavior:'smooth'});
+const ACTIONS=[
+ {g:'Navigacija',t:'Usluge',i:'hash',run:go('#usluge')},
+ {g:'Navigacija',t:'Odabrani radovi',i:'hash',run:go('#radovi')},
+ {g:'Navigacija',t:'Kako radimo',i:'hash',run:go('#proces')},
+ {g:'Navigacija',t:'Česta pitanja',i:'hash',run:go('#pitanja')},
+ ...SVC.map((s,i)=>({g:'Usluge',t:s.t,i:s.i,run:()=>openSvc(i)})),
+ {g:'Radnje',t:'Zatraži ponudu',i:'send',run:()=>{$('#upit').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('#fName').focus({preventScroll:true}),500)}},
+ {g:'Radnje',t:'Uključi ili isključi glavnu sklopku',i:'zap',run:()=>{$('#top').scrollIntoView({behavior:'smooth'});setTimeout(()=>master.click(),350)}},
+ {g:'Radnje',t:'Kopiraj adresu',i:'copy',run:()=>$('#copyAddr').click()}
+];
+const norm=s=>s.toLowerCase().replace(/đ/g,'d').normalize('NFD').replace(/[̀-ͯ]/g,'');
+let shown=[],sel=0;
+function listCmd(){const v=norm(q.value.trim());shown=ACTIONS.filter(a=>!v||norm(a.t+' '+a.g).includes(v));sel=Math.min(sel,Math.max(0,shown.length-1));
+  if(!shown.length){cl.innerHTML=`<div class="cmd-e">Nema rezultata za „${esc(q.value)}”.</div>`;return}
+  let html='',g='';shown.forEach((a,i)=>{if(a.g!==g){g=a.g;html+=`<div class="cmd-g">${g}</div>`}html+=`<div class="cmd-i" role="option" id="ci${i}" data-i="${i}" aria-selected="${i===sel}">${ic(a.i)}${a.t}</div>`});
+  cl.innerHTML=html;q.setAttribute('aria-activedescendant','ci'+sel);const s=$('#ci'+sel);if(s)s.scrollIntoView({block:'nearest'})}
+function openCmd(){q.value='';sel=0;listCmd();cmd.showModal();q.focus()}
+function runCmd(i){const a=shown[i];if(!a)return;cmd.close();setTimeout(a.run,60)}
+$('#openCmd').onclick=openCmd;
+q.addEventListener('input',()=>{sel=0;listCmd()});
+q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();sel=(sel+1)%Math.max(1,shown.length);listCmd()}else if(e.key==='ArrowUp'){e.preventDefault();sel=(sel-1+shown.length)%Math.max(1,shown.length);listCmd()}else if(e.key==='Enter'){e.preventDefault();runCmd(sel)}});
+cl.addEventListener('click',e=>{const it=e.target.closest('.cmd-i');if(it)runCmd(+it.dataset.i)});
+cl.addEventListener('pointermove',e=>{const it=e.target.closest('.cmd-i');if(it&&+it.dataset.i!==sel){sel=+it.dataset.i;cl.querySelectorAll('.cmd-i').forEach(x=>x.setAttribute('aria-selected',x===it))}});
+cmd.addEventListener('click',e=>{if(e.target===cmd)cmd.close()});
+const isMac=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent);$('#kbdHint').textContent=isMac?'⌘K':'Ctrl K';
+addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();cmd.open?cmd.close():openCmd()}});
+
+/* ---------- scroll: nav, progress, process wire ---------- */
+const nav=$('#nav'),prog=$('#prog'),mobile=matchMedia('(max-width:860px)');
+function onScroll(){const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
+  nav.classList.toggle('solid',y>20);prog.style.transform=`scaleX(${h>0?y/h:0})`;
+  const r=stepsBox.getBoundingClientRect(),p=Math.max(0,Math.min(1,(innerHeight*.75-r.top)/(r.height+innerHeight*.15)));
+  wire.style.transform=mobile.matches?`scaleY(${p})`:`scaleX(${p})`;
+  stepEls.forEach((s,i)=>s.classList.toggle('lit',p>=i/(stepEls.length-1)-.02&&p>0))}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+})();
 </script>
+
 </body>
 </html>
